@@ -1,6 +1,5 @@
 package uk.q3c.krail.config.service
 
-import net.engio.mbassy.bus.common.PubSubSupport
 import spock.lang.Specification
 import uk.q3c.krail.config.ApplicationConfiguration
 import uk.q3c.krail.config.IniFileConfig
@@ -8,8 +7,8 @@ import uk.q3c.krail.config.PathLocator
 import uk.q3c.krail.config.config.DefaultApplicationConfiguration
 import uk.q3c.krail.config.i18n.ConfigurationDescriptionKey
 import uk.q3c.krail.config.i18n.ConfigurationLabelKey
-import uk.q3c.krail.eventbus.BusMessage
-import uk.q3c.krail.eventbus.GlobalBusProvider
+import uk.q3c.krail.eventbus.MessageBus
+import uk.q3c.krail.eventbus.MessageBusProvider
 import uk.q3c.krail.i18n.Translate
 import uk.q3c.krail.i18n.test.MockTranslate
 import uk.q3c.krail.service.RelatedServiceExecutor
@@ -19,7 +18,6 @@ import uk.q3c.krail.service.ServiceStatus
 import static com.google.common.base.Preconditions.*
 import static org.assertj.core.api.Assertions.*
 import static org.mockito.Mockito.*
-
 /**
  * Created by David Sowerby on 22 Aug 2017
  */
@@ -29,8 +27,8 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
     Translate translate
     ApplicationConfiguration configuration
     Map<Integer, IniFileConfig> iniFiles
-    GlobalBusProvider globalBusProvider
-    PubSubSupport<BusMessage> globalBus
+    MessageBusProvider globalBusProvider
+    MessageBus globalBus
     PathLocator pathLocator
     RelatedServiceExecutor relatedServiceExecutor
 
@@ -38,8 +36,8 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
     def setup() {
         relatedServiceExecutor = mock(RelatedServiceExecutor)
         pathLocator = mock(PathLocator)
-        globalBus = mock(PubSubSupport)
-        globalBusProvider = mock(GlobalBusProvider)
+        globalBus = mock(MessageBus)
+        globalBusProvider = mock(MessageBusProvider)
         when(globalBusProvider.get()).thenReturn(globalBus)
         iniFiles = new HashMap<>()
         translate = new MockTranslate()

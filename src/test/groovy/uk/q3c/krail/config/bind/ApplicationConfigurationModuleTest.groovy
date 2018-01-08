@@ -18,7 +18,7 @@ import com.google.inject.*
 import spock.lang.Specification
 import uk.q3c.krail.config.IniFileConfig
 import uk.q3c.krail.config.PathLocator
-import uk.q3c.krail.eventbus.GlobalBusProvider
+import uk.q3c.krail.eventbus.MessageBusProvider
 import uk.q3c.krail.i18n.Translate
 import uk.q3c.krail.i18n.test.MockTranslate
 import uk.q3c.krail.service.RelatedServiceExecutor
@@ -37,7 +37,7 @@ class ApplicationConfigurationModuleTest extends Specification {
             bind(Translate.class).toInstance(new MockTranslate())
             bind(RelatedServiceExecutor.class).toInstance(mock(RelatedServiceExecutor))
             bind(PathLocator.class).toInstance(mock(PathLocator))
-            bind(GlobalBusProvider.class).toInstance(mock(GlobalBusProvider))
+            bind(MessageBusProvider.class).toInstance(mock(MessageBusProvider))
         }
     }
 

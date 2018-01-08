@@ -20,10 +20,15 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.q3c.krail.config.*;
+import uk.q3c.krail.config.ApplicationConfiguration;
+import uk.q3c.krail.config.ApplicationConfigurationService;
+import uk.q3c.krail.config.ConfigurationException;
+import uk.q3c.krail.config.InheritingConfiguration;
+import uk.q3c.krail.config.IniFileConfig;
+import uk.q3c.krail.config.PathLocator;
 import uk.q3c.krail.config.i18n.ConfigurationDescriptionKey;
 import uk.q3c.krail.config.i18n.ConfigurationLabelKey;
-import uk.q3c.krail.eventbus.GlobalBusProvider;
+import uk.q3c.krail.eventbus.MessageBusProvider;
 import uk.q3c.krail.i18n.I18NKey;
 import uk.q3c.krail.i18n.Translate;
 import uk.q3c.krail.service.AbstractService;
@@ -69,7 +74,7 @@ public class DefaultApplicationConfigurationService extends AbstractService impl
 
     @Inject
     protected DefaultApplicationConfigurationService(Translate translate, ApplicationConfiguration configuration, Map<Integer, IniFileConfig> iniFiles,
-                                                     GlobalBusProvider globalBusProvider, PathLocator pathLocator,
+                                                     MessageBusProvider globalBusProvider, PathLocator pathLocator,
                                                      RelatedServiceExecutor serviceExecutor) {
         super(translate, globalBusProvider, serviceExecutor);
         this.configuration = configuration;
