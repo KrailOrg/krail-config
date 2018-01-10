@@ -18,13 +18,12 @@ import com.google.inject.*
 import spock.lang.Specification
 import uk.q3c.krail.config.IniFileConfig
 import uk.q3c.krail.config.PathLocator
-import uk.q3c.krail.eventbus.MessageBusProvider
+import uk.q3c.krail.eventbus.MessageBus
 import uk.q3c.krail.i18n.Translate
 import uk.q3c.krail.i18n.test.MockTranslate
 import uk.q3c.krail.service.RelatedServiceExecutor
 
 import static org.mockito.Mockito.*
-
 /**
  * Created by David Sowerby on 15 Jan 2016
  */
@@ -37,7 +36,7 @@ class ApplicationConfigurationModuleTest extends Specification {
             bind(Translate.class).toInstance(new MockTranslate())
             bind(RelatedServiceExecutor.class).toInstance(mock(RelatedServiceExecutor))
             bind(PathLocator.class).toInstance(mock(PathLocator))
-            bind(MessageBusProvider.class).toInstance(mock(MessageBusProvider))
+            bind(MessageBus.class).toInstance(mock(MessageBus))
         }
     }
 

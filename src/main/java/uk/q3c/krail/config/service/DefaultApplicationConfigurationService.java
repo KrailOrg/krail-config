@@ -28,7 +28,7 @@ import uk.q3c.krail.config.IniFileConfig;
 import uk.q3c.krail.config.PathLocator;
 import uk.q3c.krail.config.i18n.ConfigurationDescriptionKey;
 import uk.q3c.krail.config.i18n.ConfigurationLabelKey;
-import uk.q3c.krail.eventbus.MessageBusProvider;
+import uk.q3c.krail.eventbus.MessageBus;
 import uk.q3c.krail.i18n.I18NKey;
 import uk.q3c.krail.i18n.Translate;
 import uk.q3c.krail.service.AbstractService;
@@ -74,9 +74,9 @@ public class DefaultApplicationConfigurationService extends AbstractService impl
 
     @Inject
     protected DefaultApplicationConfigurationService(Translate translate, ApplicationConfiguration configuration, Map<Integer, IniFileConfig> iniFiles,
-                                                     MessageBusProvider globalBusProvider, PathLocator pathLocator,
+                                                     MessageBus messageBus, PathLocator pathLocator,
                                                      RelatedServiceExecutor serviceExecutor) {
-        super(translate, globalBusProvider, serviceExecutor);
+        super(translate, messageBus, serviceExecutor);
         this.configuration = configuration;
         this.iniFiles = iniFiles;
         this.pathLocator = pathLocator;

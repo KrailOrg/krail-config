@@ -8,7 +8,6 @@ import uk.q3c.krail.config.config.DefaultApplicationConfiguration
 import uk.q3c.krail.config.i18n.ConfigurationDescriptionKey
 import uk.q3c.krail.config.i18n.ConfigurationLabelKey
 import uk.q3c.krail.eventbus.MessageBus
-import uk.q3c.krail.eventbus.MessageBusProvider
 import uk.q3c.krail.i18n.Translate
 import uk.q3c.krail.i18n.test.MockTranslate
 import uk.q3c.krail.service.RelatedServiceExecutor
@@ -27,8 +26,7 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
     Translate translate
     ApplicationConfiguration configuration
     Map<Integer, IniFileConfig> iniFiles
-    MessageBusProvider globalBusProvider
-    MessageBus globalBus
+    MessageBus messageBus
     PathLocator pathLocator
     RelatedServiceExecutor relatedServiceExecutor
 
@@ -36,13 +34,11 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
     def setup() {
         relatedServiceExecutor = mock(RelatedServiceExecutor)
         pathLocator = mock(PathLocator)
-        globalBus = mock(MessageBus)
-        globalBusProvider = mock(MessageBusProvider)
-        when(globalBusProvider.get()).thenReturn(globalBus)
+        messageBus = mock(MessageBus)
         iniFiles = new HashMap<>()
         translate = new MockTranslate()
         configuration = new DefaultApplicationConfiguration()
-        service = new DefaultApplicationConfigurationService(translate, configuration, iniFiles, globalBusProvider, pathLocator, relatedServiceExecutor)
+        service = new DefaultApplicationConfigurationService(translate, configuration, iniFiles, messageBus, pathLocator, relatedServiceExecutor)
         when(relatedServiceExecutor.execute(RelatedServiceExecutor.Action.START, Service.Cause.STARTED)).thenReturn(true)
         when(pathLocator.configurationDirectory()).thenReturn(new File("/home/david/git/krail-config/src/test/groovy/uk/q3c/krail/config/service"))
     }
