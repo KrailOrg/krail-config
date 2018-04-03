@@ -22,6 +22,7 @@ import uk.q3c.krail.eventbus.MessageBus
 import uk.q3c.krail.i18n.Translate
 import uk.q3c.krail.i18n.test.MockTranslate
 import uk.q3c.krail.service.RelatedServiceExecutor
+import uk.q3c.util.guice.SerializationSupport
 
 import static org.mockito.Mockito.*
 /**
@@ -37,6 +38,7 @@ class ApplicationConfigurationModuleTest extends Specification {
             bind(RelatedServiceExecutor.class).toInstance(mock(RelatedServiceExecutor))
             bind(PathLocator.class).toInstance(mock(PathLocator))
             bind(MessageBus.class).toInstance(mock(MessageBus))
+            bind(SerializationSupport.class).toInstance(mock(SerializationSupport))
         }
     }
 

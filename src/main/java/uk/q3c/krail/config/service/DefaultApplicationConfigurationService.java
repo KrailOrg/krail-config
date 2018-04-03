@@ -34,6 +34,7 @@ import uk.q3c.krail.i18n.Translate;
 import uk.q3c.krail.service.AbstractService;
 import uk.q3c.krail.service.RelatedServiceExecutor;
 import uk.q3c.krail.service.Service;
+import uk.q3c.util.guice.SerializationSupport;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.File;
@@ -69,14 +70,14 @@ public class DefaultApplicationConfigurationService extends AbstractService impl
 
     private final ApplicationConfiguration configuration;
 
-    private final Map<Integer, IniFileConfig> iniFiles;
+    private final transient Map<Integer, IniFileConfig> iniFiles;
     private PathLocator pathLocator;
 
     @Inject
     protected DefaultApplicationConfigurationService(Translate translate, ApplicationConfiguration configuration, Map<Integer, IniFileConfig> iniFiles,
                                                      MessageBus messageBus, PathLocator pathLocator,
-                                                     RelatedServiceExecutor serviceExecutor) {
-        super(translate, messageBus, serviceExecutor);
+                                                     RelatedServiceExecutor serviceExecutor, SerializationSupport serializationSupport) {
+        super(translate, messageBus, serviceExecutor, serializationSupport);
         this.configuration = configuration;
         this.iniFiles = iniFiles;
         this.pathLocator = pathLocator;

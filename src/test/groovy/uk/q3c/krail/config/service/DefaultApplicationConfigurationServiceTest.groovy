@@ -13,6 +13,7 @@ import uk.q3c.krail.i18n.test.MockTranslate
 import uk.q3c.krail.service.RelatedServiceExecutor
 import uk.q3c.krail.service.Service
 import uk.q3c.krail.service.ServiceStatus
+import uk.q3c.util.guice.SerializationSupport
 
 import static com.google.common.base.Preconditions.*
 import static org.assertj.core.api.Assertions.*
@@ -29,16 +30,18 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
     MessageBus messageBus
     PathLocator pathLocator
     RelatedServiceExecutor relatedServiceExecutor
+    SerializationSupport serializationSupport
 
 
     def setup() {
         relatedServiceExecutor = mock(RelatedServiceExecutor)
         pathLocator = mock(PathLocator)
         messageBus = mock(MessageBus)
+        serializationSupport = mock(SerializationSupport)
         iniFiles = new HashMap<>()
         translate = new MockTranslate()
         configuration = new DefaultApplicationConfiguration()
-        service = new DefaultApplicationConfigurationService(translate, configuration, iniFiles, messageBus, pathLocator, relatedServiceExecutor)
+        service = new DefaultApplicationConfigurationService(translate, configuration, iniFiles, messageBus, pathLocator, relatedServiceExecutor, serializationSupport)
         when(relatedServiceExecutor.execute(RelatedServiceExecutor.Action.START, Service.Cause.STARTED)).thenReturn(true)
         when(pathLocator.configurationDirectory()).thenReturn(new File("/home/david/git/krail-config/src/test/groovy/uk/q3c/krail/config/service"))
     }
