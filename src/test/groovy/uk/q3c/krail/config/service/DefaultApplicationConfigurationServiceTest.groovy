@@ -10,9 +10,9 @@ import uk.q3c.krail.config.i18n.ConfigurationLabelKey
 import uk.q3c.krail.eventbus.MessageBus
 import uk.q3c.krail.i18n.Translate
 import uk.q3c.krail.i18n.test.MockTranslate
-import uk.q3c.krail.service.RelatedServiceExecutor
-import uk.q3c.krail.service.Service
+import uk.q3c.krail.service.Cause
 import uk.q3c.krail.service.ServiceStatus
+import uk.q3c.krail.service.State
 import uk.q3c.util.guice.SerializationSupport
 
 import static com.google.common.base.Preconditions.*
@@ -29,20 +29,17 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
     Map<Integer, IniFileConfig> iniFiles
     MessageBus messageBus
     PathLocator pathLocator
-    RelatedServiceExecutor relatedServiceExecutor
     SerializationSupport serializationSupport
 
 
     def setup() {
-        relatedServiceExecutor = mock(RelatedServiceExecutor)
         pathLocator = mock(PathLocator)
         messageBus = mock(MessageBus)
         serializationSupport = mock(SerializationSupport)
         iniFiles = new HashMap<>()
         translate = new MockTranslate()
         configuration = new DefaultApplicationConfiguration()
-        service = new DefaultApplicationConfigurationService(translate, configuration, iniFiles, messageBus, pathLocator, relatedServiceExecutor, serializationSupport)
-        when(relatedServiceExecutor.execute(RelatedServiceExecutor.Action.START, Service.Cause.STARTED)).thenReturn(true)
+        service = new DefaultApplicationConfigurationService(translate, configuration, iniFiles, messageBus, pathLocator, serializationSupport)
         when(pathLocator.configurationDirectory()).thenReturn(new File("/home/david/git/krail-config/src/test/groovy/uk/q3c/krail/config/service"))
     }
 
@@ -92,7 +89,7 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
 
         then:
         ("service shows as failed because required config missing")
-        assertThat(service.getState()).isEqualTo(Service.State.FAILED)
+        assertThat(service.getState()).isEqualTo(State.FAILED)
 
     }
 
@@ -107,7 +104,7 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
 
         then: "one configuration is the in memory one added automatically"
         assertThat(configuration.getNumberOfConfigurations()).isEqualTo(3)
-        assertThat(service.getState()).isEqualTo(Service.State.RUNNING)
+        assertThat(service.getState()).isEqualTo(State.RUNNING)
         assertThat(configuration.getString("in memory")).isEqualTo("memory")
 
         when:
@@ -115,7 +112,7 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
 
         then:
         assertThat(configuration.getNumberOfConfigurations()).isEqualTo(1)
-        assertThat(service.getState()).isEqualTo(Service.State.STOPPED)
+        assertThat(service.getState()).isEqualTo(State.STOPPED)
         assertThat(configuration.getString("in memory")).isNull()
     }
 
@@ -129,8 +126,8 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
         ServiceStatus status = service.start()
 
         then: "service fails to start, mandatory config file is missing"
-        assertThat(status.getState()).isEqualTo(Service.State.FAILED)
-        assertThat(status.cause).isEqualTo(Service.Cause.FAILED_TO_START)
+        assertThat(status.getState()).isEqualTo(State.FAILED)
+        assertThat(status.cause).isEqualTo(Cause.FAILED_TO_START)
         assertThat(configuration.getNumberOfConfigurations()).isEqualTo(1)
     }
 

@@ -16,7 +16,6 @@ import uk.q3c.krail.config.ApplicationConfiguration;
 import uk.q3c.krail.config.ApplicationConfigurationService;
 import uk.q3c.krail.config.ConfigurationModuleBase;
 import uk.q3c.krail.config.config.DefaultApplicationConfiguration;
-import uk.q3c.krail.config.i18n.ConfigurationLabelKey;
 import uk.q3c.krail.config.service.DefaultApplicationConfigurationService;
 
 /**
@@ -39,16 +38,6 @@ public class ApplicationConfigurationModule extends ConfigurationModuleBase {
      */
     protected void define() {
         addConfig("krail.ini", 100, true);
-    }
-
-    @Override
-    protected void registerServices() {
-        registerService(ConfigurationLabelKey.Application_Configuration_Service, ApplicationConfigurationService.class);
-    }
-
-    @Override
-    protected void defineDependencies() {
-//There are none
     }
 
     /**

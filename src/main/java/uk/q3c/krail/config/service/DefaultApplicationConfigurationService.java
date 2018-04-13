@@ -32,7 +32,6 @@ import uk.q3c.krail.eventbus.MessageBus;
 import uk.q3c.krail.i18n.I18NKey;
 import uk.q3c.krail.i18n.Translate;
 import uk.q3c.krail.service.AbstractService;
-import uk.q3c.krail.service.RelatedServiceExecutor;
 import uk.q3c.krail.service.Service;
 import uk.q3c.util.guice.SerializationSupport;
 
@@ -76,8 +75,8 @@ public class DefaultApplicationConfigurationService extends AbstractService impl
     @Inject
     protected DefaultApplicationConfigurationService(Translate translate, ApplicationConfiguration configuration, Map<Integer, IniFileConfig> iniFiles,
                                                      MessageBus messageBus, PathLocator pathLocator,
-                                                     RelatedServiceExecutor serviceExecutor, SerializationSupport serializationSupport) {
-        super(translate, messageBus, serviceExecutor, serializationSupport);
+                                                     SerializationSupport serializationSupport) {
+        super(translate, messageBus, serializationSupport);
         this.configuration = configuration;
         this.iniFiles = iniFiles;
         this.pathLocator = pathLocator;
