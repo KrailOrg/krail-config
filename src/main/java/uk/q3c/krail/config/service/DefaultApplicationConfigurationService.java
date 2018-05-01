@@ -15,7 +15,7 @@ package uk.q3c.krail.config.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.configuration.CompositeConfiguration;
+import org.apache.commons.configuration.CombinedConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.slf4j.Logger;
@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import uk.q3c.krail.config.ApplicationConfiguration;
 import uk.q3c.krail.config.ApplicationConfigurationService;
 import uk.q3c.krail.config.ConfigurationException;
-import uk.q3c.krail.config.InheritingConfiguration;
 import uk.q3c.krail.config.IniFileConfig;
 import uk.q3c.krail.config.PathLocator;
 import uk.q3c.krail.config.i18n.ConfigurationDescriptionKey;
@@ -45,7 +44,7 @@ import java.util.TreeSet;
 /**
  * This service provides a mechanism which can be used to manage the whole application configuration. It uses the
  * Apache
- * Commons Configuration library, and specifically a {@link CompositeConfiguration} so that the configuration can be
+ * Commons Configuration library, and specifically a {@link CombinedConfiguration} so that the configuration can be
  * extended in any way the developer wishes.
  * <p/>
  * We have a preference for using HierarchicalINIConfiguration to provide a good level of human readability (when the
@@ -53,11 +52,11 @@ import java.util.TreeSet;
  * <p/>
  * See the {@link Service} javadoc for more detail about Services
  * <p/>
- * Once this service has been started, access the configuration by injecting {@link InheritingConfiguration}. Note that
+ * Once this service has been started, access the configuration by injecting {@link ApplicationConfiguration}. Note that
  * the configuration can be legitimately empty if no configuration non-default settings are required, and all calls for
  * configuration values provide a valid default.
  * <p/>
- * When this service is stopped the {@link InheritingConfiguration} is cleared.
+ * When this service is stopped the {@link ApplicationConfiguration} is cleared.
  *
  * @author David Sowerby
  */

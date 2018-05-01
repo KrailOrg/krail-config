@@ -57,7 +57,7 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
 
         then: "one configuration is the in memory one added automatically"
         assertThat(service.isStarted()).isTrue()
-        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(2)
+        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(1)
         assertThat(configuration.getBoolean("test")).isTrue()
         assertThat(configuration.getString("dbUser")).isEqualTo("monty")
 
@@ -72,7 +72,7 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
         service.start()
 
         then: "one configuration is the in memory one added automatically"
-        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(3)
+        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(2)
         assertThat(configuration.getBoolean("test")).isTrue()
         assertThat(configuration.getString("dbUser")).isEqualTo("python")
     }
@@ -97,23 +97,22 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
         given:
         addConfig("krail.ini", 0, false)
         addConfig("test.krail.ini", 1, false)
-        configuration.addProperty("in memory", "memory")
+
 
         when:
         service.start()
 
         then: "one configuration is the in memory one added automatically"
-        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(3)
+        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(2)
         assertThat(service.getState()).isEqualTo(State.RUNNING)
-        assertThat(configuration.getString("in memory")).isEqualTo("memory")
 
         when:
         service.stop()
 
         then:
-        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(1)
+        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(0)
         assertThat(service.getState()).isEqualTo(State.STOPPED)
-        assertThat(configuration.getString("in memory")).isNull()
+
     }
 
 
@@ -128,7 +127,7 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
         then: "service fails to start, mandatory config file is missing"
         assertThat(status.getState()).isEqualTo(State.FAILED)
         assertThat(status.cause).isEqualTo(Cause.FAILED_TO_START)
-        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(1)
+        assertThat(configuration.getNumberOfConfigurations()).isEqualTo(0)
     }
 
     def "I18N keys"() {
@@ -138,6 +137,21 @@ class DefaultApplicationConfigurationServiceTest extends Specification {
         assertThat(service.getDescriptionKey()).isEqualTo(ConfigurationDescriptionKey.Application_Configuration_Service)
         assertThat(service.getDescription()).isEqualTo("Application Configuration Service")
     }
+
+    def "Unsupported operations"() {
+        when:
+        configuration.addProperty("x", 1)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when:
+        configuration.setProperty("x", 1)
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
 
     protected void addConfig(String filename, int index, boolean optional) {
         checkNotNull(filename)

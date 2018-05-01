@@ -35,4 +35,15 @@ public class DefaultApplicationConfiguration extends InheritingConfiguration imp
         super();
     }
 
+    @Override
+    @Deprecated
+    public void addProperty(String key, Object value) {
+        throw new UnsupportedOperationException("Adding a property value directly has undefined results, access contained configurations instead");
+    }
+
+    @Override
+    @Deprecated
+    public void setProperty(String key, Object value) {
+        throw new UnsupportedOperationException("Setting  a property value directly has undefined results, access contained configurations instead");
+    }
 }
