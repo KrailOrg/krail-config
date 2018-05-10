@@ -20,6 +20,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "uk.q3c.kaytee:kaytee-plugin:$kaytee_plugin_version"
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
     }
 }
 
@@ -31,6 +32,7 @@ group = 'uk.q3c.krail'
 
 apply plugin: 'uk.q3c.kaytee'
 apply plugin: "kotlin"
+apply from : "gradle/spek.gradle"
 
 repositories {
     jcenter()
@@ -45,7 +47,7 @@ ext.assertjVersion = '3.8.0'
 
 kaytee {
     version{
-        number = "0.11.0.0"
+        number = "0.12.0.0"
     }
 }
 
@@ -54,7 +56,13 @@ bintray {
 }
 
 dependencies {
-    compile 'uk.q3c.krail:krail-config-api:0.11.1.0'
+    compile 'uk.q3c.krail:krail-config-api:0.12.0.0'
+    compile 'org.apache.commons:commons-lang3:3.7'
+    compile "commons-io:commons-io:2.6"
+
+    runtime "commons-beanutils:commons-beanutils:1.9.3"
+    runtime "org.yaml:snakeyaml:1.21"
+
 //
     testCompile 'org.assertj:assertj-core:' + assertjVersion
     testCompile 'junit:junit:4.12'
