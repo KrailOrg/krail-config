@@ -44,6 +44,24 @@ object ApplicationConfigurationServiceTest : Spek({
             injectorLocator.put(injector)
         }
 
+        on("try to get a non-existent property with a default") {
+            val testValueAsString = config.getPropertyValue("scribbly", "defaultValue")
+            val testValueAsBoolean = config.getPropertyValue("scribbly", true)
+
+            it("should return default") {
+                testValueAsString.shouldBeEqualTo("defaultValue")
+                testValueAsBoolean.shouldBeTrue()
+            }
+        }
+
+        on("try to get a non-existent property with no default") {
+            val result = { config.getPropertyValue(String::class.java, "scribbly") }
+
+            it("should throw exception") {
+                result.shouldThrow(ConfigurationPropertyNotFoundException::class)
+            }
+        }
+
         on("loading set of files with overlapping properties, and retrieving without a default value") {
             val petsValue = config.getPropertyValue(List::class.java, "pets")
 
@@ -224,13 +242,15 @@ object ApplicationConfigurationServiceTest2 : Spek({
             injectorLocator.put(injector)
         }
 
-        on("try to get a property") {
+        on("try to get a non-existent property with no default") {
             val result = { val testValueAsString = config.getPropertyValue(String::class.java, "test") }
 
             it("should throw exception") {
                 result.shouldThrow(ApplicationConfigurationException::class)
             }
         }
+
+
     }
 })
 

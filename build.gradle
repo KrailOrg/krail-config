@@ -47,7 +47,7 @@ ext.assertjVersion = '3.8.0'
 
 kaytee {
     version{
-        number = "0.12.1.0"
+        number = "0.12.2.0"
     }
 }
 

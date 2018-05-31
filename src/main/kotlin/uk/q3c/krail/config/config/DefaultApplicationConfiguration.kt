@@ -77,11 +77,31 @@ class DefaultApplicationConfiguration @Inject constructor(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun <T : Any> getValue(propertyName: String, defaultValue: T): T {
+        val valueClass: Class<T> = defaultValue.javaClass
+        // Kotlin uses internal representations such as EmptyList which break the when clause
+        if (List::class.java.isAssignableFrom(valueClass)) {
+            return combinedConfiguration.getList(propertyName) as T
+        }
+        return when (valueClass) {
+            String::class.java, java.lang.String::class.java -> combinedConfiguration.getString(propertyName, defaultValue as String) as T
+            Integer::class.java, java.lang.Integer::class.java -> combinedConfiguration.getInt(propertyName, defaultValue as Int) as T
+            Boolean::class.java, java.lang.Boolean::class.java -> combinedConfiguration.getBoolean(propertyName, defaultValue as Boolean) as T
+            Double::class.java, java.lang.Double::class.java -> combinedConfiguration.getDouble(propertyName, defaultValue as Double) as T
+            Float::class.java, java.lang.Float::class.java -> combinedConfiguration.getFloat(propertyName, defaultValue as Float) as T
+
+            else -> {
+                throw ConfigurationPropertyTypeNotKnown(propertyName, valueClass.name)
+            }
+        }
+    }
+
     override fun <T : Any> getPropertyValue(propertyName: String, defaultValue: T): T {
         synchronized(lock) {
             checkLoaded()
             try {
-                return getValue(defaultValue.javaClass, propertyName) ?: defaultValue
+                return getValue(propertyName = propertyName, defaultValue = defaultValue)
             } catch (e: Exception) {
                 throw ConfigurationPropertyNotFoundException(propertyName, e)
             }
